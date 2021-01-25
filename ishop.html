@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+    <head>
+<link rel="stylesheet" href="../bootstrap-4.4.1-dist/css/bootstrap.css">
+<link rel="stylesheet" href="/fontawesome-free-5.12.0-web/css/all.css">
+
+<style>
+#header{
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-style: italic;
+    background-color:darkcyan;
+    font-size: 35px;
+    
+}
+#footer{
+    width: 100%;
+    text-align: center;
+    font-family: italic;
+   
+    background-color: darkcyan;
+   color: white;
+    font-size: 35px;
+
+}
+#rightpanel{
+    float: right;
+    position: fixed;
+    cursor: pointer;
+    right: 50px;
+    color:darkgoldenrod;
+
+}
+#leftpanel{
+    width: 250px;
+    margin-top: 40px;
+    height: 400px;
+    float: left;
+    border: 2px solid darkcyan;
+    box-shadow: 0px 10px 10px darkcyan;
+    border-radius: 8px;
+    padding: 25px;
+   
+}
+#leftpanel2{
+    width:auto;
+    margin-top: 20px;
+    margin-left: 10px;
+    height: auto;
+    float: left;
+    border-radius: 8px;
+    padding: 25px;
+   
+    
+}
+#section{
+    height: 600px;
+}
+</style>
+<script>
+ var categories =["Select Category","Electronics","shoes","fashion"];
+  function bodyload(){
+      
+      for(var i=0;i<categories.length;i++){
+          var option=document.createElement("option");
+          option.text=categories[i];
+          option.value=categories[i];
+          document.getElementById("lstCategories").appendChild(option);
+      }
+  }
+  var electronics=["Select Product","Samsung Tv", "MI Mobile"];
+  var shoes=["Select Product","Nike", "lee Cooper Boot"];
+  var fashion = ["Select product","lee Jeans", "sunglasses"];
+  var data =[{Name:"Samsung Tv", Price:45445,Photo:"../images/tv.jpg"},
+  {Name:"MI Mobile", Price:45444,Photo:"../images/mobile.jpg"},
+  {Name:"Nike", Price:45445,Photo:"../images/nike.jpeg"},
+  {Name:"lee Cooper Boot", Price:45445,Photo:"../images/leecooper.jpg"},
+  {Name:"lee Jeans", Price:45445,Photo:"../images/leejeans.jpg"},
+  {Name:"sunglasses", Price:4545,Photo:"../images/sunglasses.jpg"}];
+  function ShowProducts(list){
+
+    var lstProducts = document.getElementById("lstProducts");
+      for(var i=0;i<list.length;i++){
+
+          var option= document.createElement("option");
+          option.text=list[i];
+          option.list=list[i];
+          lstProducts.appendChild(option);
+      }
+  }
+  // categories Drop down Code
+  function CategoryChanged(){
+      var categoryName=document.getElementById("lstCategories").value;
+      switch(categoryName){
+          case "Electronics":
+          document.getElementById("lstProducts").innerHTML="";
+          ShowProducts(electronics);
+          break;
+          case "shoes":
+          document.getElementById("lstProducts").innerHTML="";
+          ShowProducts(shoes);
+          break;
+          case "fashion":
+          document.getElementById("lstProducts").innerHTML="";
+          ShowProducts(fashion);
+          break;
+          default:
+          document.getElementById("lstProducts").innerHTML="";
+          break;
+      }
+  }
+        var product=[];
+        // Products  Drop Down Code
+        function ProductChanged(){
+            var productname = document.getElementById("lstProducts").value;
+            product=data.filter
+            (x=>x.Name==productname);
+            document.getElementById("pic").src=product[0].Photo;
+            document.getElementById("lblPrice").innerHTML="&#8377;"+product[0].Price;
+
+        }
+        var cartItems=[];
+        function AddToCartClick(){
+            cartItems.push(product[0]);
+            for(var i=0;i<cartItems.length;i++){
+                var tr=document.createElement("tr");
+                var tdName= document.createElement("td");
+                var tdPrice = document.createElement("td");
+                var tdPhoto = document.createElement("td");
+                tdName.innerHTML=product[0].Name;
+                tdPrice.innerHTML= product[0].Price;
+                var img = new Image();
+                img.src=product[0].Photo;
+                img.width="50";
+                img.height="50";
+                tdPhoto.appendChild(img);
+                tr.appendChild(tdName);
+                tr.appendChild(tdPrice);
+                tr.appendChild(tdPhoto);
+
+            }
+            document.getElementById("tbody").appendChild(tr);
+            document.getElementById("lblCount").innerHTML= cartItems.length;
+        }
+        function ShowCart(){
+            var displaystyle= document.getElementById("cart").style.display;
+            document.getElementById("cart").style.display=(displaystyle=="none")?"block":"none";
+
+        }
+        function CloseClick(){
+            document.getElementById("cart").style.display="none";
+        }
+
+
+</script>
+</head>
+<body onload="bodyload()">
+    <div class="container-fluid">
+<header id="header"><span class="fa fa-shopping-bag"></span> <span class="text-center">
+       I-Shop </span>   </header>
+<div id="section" class="container-fluid" >
+<div id="leftpanel">
+<div  class=" form-group">
+    <label>Select Category</label>
+    <select onchange="CategoryChanged()"  class="form-control" id="lstCategories"></select>
+    
+</div>
+<div  class="form-group">
+    <label>Select Product</label>
+    <select onchange="ProductChanged()"
+     id="lstProducts" class="form-control"></select>
+</div>
+<div class="form-group">
+    <div ><label class="font-weight-bold" > Preview</label>
+    </div>
+    <div> <img id="pic" width="200" height="100"> 
+    <label id="lblPrice"></label>
+    </div>
+    <button  onclick="AddToCartClick()" class="fa fa-shopping-cart btn btn-primary "> Add to Cart</button>
+</div>
+
+</div>
+<div  id="leftpanel2" class="container-fluid">
+<div class="form-group">
+    <h3 style="color: darkcyan; "> Your Cart Items</h3>
+    <table class="table" overflow="scroll" width="300px"  cellpadding="10px" id="cart" >
+        <thead >
+            <tr><th>Name</th>
+            <th>Price</th>
+            <th>Preview</th></tr>
+            <tbody id="tbody"></tbody>
+        </thead>
+        <tr colspan="2"><td onclick="CloseClick()"><input  class="form-control btn btn-danger" value="Close" type="button" ></td></tr>
+    </table>
+    </div>
+</div>
+    <div id="rightpanel">
+        <label  class="fa fa-shopping-cart" style="font-size: 50px;"></label>
+        <div onclick="ShowCart()" >[<span id="lblCount"></span>]</div>
+    </div>
+    
+      
+   
+</div>
+
+  <footer> <div id="footer"> &copy; copy rights reserved 2020 </div>
+  </footer> 
+</div>
+</body>
+</html>
